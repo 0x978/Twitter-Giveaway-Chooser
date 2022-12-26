@@ -1,6 +1,5 @@
 import TwitterApi from "twitter-api-v2"
 
-
 const Page = ({ response }) => {
     return (
         <main>
@@ -15,7 +14,6 @@ export async function getServerSideProps(context) { // runs on page load
     console.log(context.query.id)
     const twitterClient = new TwitterApi(process.env.bearer_token); // gets bearer token from env
     const likedByID = await twitterClient.v2.tweetLikedBy(context.query.id); // gets users who liked tweets by id
-
 
     return {
         props: {
