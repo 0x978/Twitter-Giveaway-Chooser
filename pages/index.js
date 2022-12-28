@@ -8,7 +8,7 @@ export default function Index() {
 
     function goto(parsedID){
         router.push({
-            pathname: "/testAPIPage",
+            pathname: "/displayWinner",
             query:{
                 id: parsedID
             }
@@ -38,7 +38,7 @@ export default function Index() {
         <form className={styles.inputForm}>
             <h3 className={styles.header}>Enter a tweet URL to get started!</h3>
             <label>Tweet URL: </label>
-            <input type="text" id="URLinput" required onChange={(e) => setURL(e.target.value)}/>
+            <input type="text" id="URLinput" onChange={(e) => setURL(e.target.value)}/>
             <button onClick={verification}>Submit</button>
         </form>
     </main>
