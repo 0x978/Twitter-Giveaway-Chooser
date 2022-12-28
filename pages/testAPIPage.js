@@ -1,6 +1,7 @@
 import TwitterApi from "twitter-api-v2"
 
 const Page = ({ response }) => {
+
     return (
         <main>
             <h1>{response.data[0].id}</h1>
@@ -13,8 +14,35 @@ const Page = ({ response }) => {
 export async function getServerSideProps(context) { // runs on page load
 
     const twitterClient = new TwitterApi(process.env.bearer_token); // gets bearer token from env
-    const likedByID = await twitterClient.v2.tweetLikedBy(context.query.id,{ asPaginator: true }); // paginated response from twitter api
+    let likedByID = null
 
+    // error handling for invalid tweet URL and API limit
+    try {
+        likedByID = await twitterClient.v2.tweetLikedBy(context.query.id,{ asPaginator: true }); // paginated response from twitter api
+    }
+    catch (ApiResponseError){
+        console.log(ApiResponseError.code)
+        switch (ApiResponseError.code){
+            case 429:
+                return {
+                    redirect: {
+                        destination: '/429',
+                        permanent: false,
+                    },
+                };
+            case 404:
+                return {
+                    redirect: {
+                        destination: '/tweet404',
+                        permanent: false,
+                    },
+                };
+            default:
+                return {
+                    notFound: true,
+                }
+        }
+    }
     let resArr = [iterateRes(likedByID.data)] // 2d arr of all user ID's per page
 
 
@@ -22,10 +50,13 @@ export async function getServerSideProps(context) { // runs on page load
     // this means only the most recent 1000 likes are considered
     // TODO since I am iterating 10 times and then choosing a random page from 0 to 10, unnecessary API calls are being used up. Could run for loop random amount of times and take last?
     for(let i = 0; i < 9; i++){ // iterating over likedbyID paginations 9 times (+1 from orig call = 10) TODO assess whether this is a good amount
-        if(!likedByID.done && likedByID.rateLimit.remaining !== 0){
+        if(!likedByID.done && likedByID.rateLimit.remaining > 10){
             let pageResult = await likedByID.next(100) // stores new req as own instance, not necessary and confuses things TODO <<<
             resArr.push(iterateRes(pageResult.data))
             console.log(pageResult.rateLimit) // TODO debug info remove later
+        }
+        else{
+            break
         }
     }
 
