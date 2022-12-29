@@ -10,6 +10,10 @@
     font-size: 30px;
 }
 
+.text{
+    color: white;
+}
+
 .inputForm{
     background: #383434;
     display:flex;
@@ -21,4 +25,90 @@
     min-width: 60vw;
     border-radius: 30px;
     height: 60vh;
+}
+
+.URLInput{
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.URLInput:focus{
+    border: 2px solid #555;
+}
+
+.likedButton {
+    background-color: transparent;
+    color: #1DA1F2;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.likedButton:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.likedButton:active {
+    background-color: rgba(29, 161, 242, 0.2);
+}
+
+.likedButton:before {
+    content: "\2764";
+    margin-right: 8px;
+}
+
+.rtButton {
+    background-color: transparent;
+    color: #1DA1F2;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.rtButton:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.rtButton:active {
+    background-color: rgba(29, 161, 242, 0.2);
+}
+
+.rtButton:before {
+    content: "\1F502";
+    margin-right: 8px;
+}
+
+.repliedButton {
+    background-color: transparent;
+    color: #1DA1F2;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.repliedButton :hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.repliedButton :active {
+    background-color: rgba(29, 161, 242, 0.2);
+}
+
+.repliedButton:before {
+    content: "\27A1";
+    margin-right: 8px;
 }

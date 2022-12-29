@@ -1,6 +1,9 @@
 import TwitterApi from "twitter-api-v2"
+import {useEffect} from "react";
 
 const Page = ({ response }) => {
+
+    console.log(response)
 
     return (
         <main>
@@ -11,7 +14,9 @@ const Page = ({ response }) => {
     );
 };
 
-export async function getServerSideProps(context) { // runs on page load
+// I know its probably not good to run this much code in the getServerSideProps but when I try streamlining the process by using api routes etc it fails
+// I think its something to do with the library only working on server side
+export async function getServerSideProps(context) {
 
     const twitterClient = new TwitterApi(process.env.bearer_token); // gets bearer token from env
     let likedByID = null
@@ -25,9 +30,9 @@ export async function getServerSideProps(context) { // runs on page load
             case 429: // Error for reaching API limit
                 return {
                     redirect: {
-                        destination: '/429',
+                        destination: '/errorPages/429',
                         permanent: false,
-                    },
+                    }
                 };
             default:
                 return {
@@ -39,7 +44,7 @@ export async function getServerSideProps(context) { // runs on page load
     if(likedByID.errors.length > 0){
         return {
             redirect: {
-                destination: '/tweet404',
+                destination: '/errorPages/tweet404',
                 permanent: false,
             },
         };
@@ -64,13 +69,21 @@ export async function getServerSideProps(context) { // runs on page load
     let winner = chooseWinner(resArr)
     console.log(winner) // TODO debug info remove later
 
+    const winnerDetails = await twitterClient.v2.user(winner.id, { 'user.fields':
+            ['created_at','description','entities','id','location','name','pinned_tweet_id',
+                'profile_image_url', 'protected','public_metrics','url','username','verified','withheld'] });
+
     return {
         props: {
             response: {
                 data:[{
                     id:winner.id,
                     name:winner.name,
-                    username:winner.username
+                    username:winner.username,
+                    public_metrics:winnerDetails.data.public_metrics,
+                    isVerified:winnerDetails.data.verified,
+                    isPrivate:winnerDetails.data.protected,
+                    accountAge: winnerDetails.data.created_at
                 }]
             },
         },

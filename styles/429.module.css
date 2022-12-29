@@ -1,0 +1,41 @@
+.main{
+    font-family: sans-serif;
+    font-size: 20px;
+    display: flex;
+    height: 100vh;
+}
+.messageDiv{
+    background: #6b0e0e;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    max-width: 800px;
+    min-width: 60vw;
+    border-radius: 40px;
+}
+
+.text{
+    color: white;
+}
+
+.button {
+    background: #44c767 linear-gradient(to bottom, #44c767 5%, #11a6ab 100%);
+    border-radius:37px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-size:17px;
+    font-weight:bold;
+    font-style:italic;
+    padding:14px 31px;
+    margin-bottom: 2vh;
+}
+.button:hover {
+    background: #3a8712 linear-gradient(to bottom, #5cbf2a 5%, #3ad066 100%);
+}
+.button:active {
+    position:relative;
+    top:2px;
+}

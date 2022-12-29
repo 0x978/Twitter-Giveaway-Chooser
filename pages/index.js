@@ -37,9 +37,12 @@ export default function Index() {
     <main className={styles.indexBody}>
         <form className={styles.inputForm}>
             <h3 className={styles.header}>Enter a tweet URL to get started!</h3>
-            <label>Tweet URL: </label>
-            <input type="text" id="URLinput" onChange={(e) => setURL(e.target.value)}/>
-            <button onClick={verification}>Submit</button>
+            <label className={styles.text}>Tweet URL: </label>
+            <input type="text" className={styles.URLInput} onChange={(e) => setURL(e.target.value)}/>
+            <button className={styles.likedButton} onClick={verification}>Liked users</button>
+            <button className={styles.rtButton} onClick={verification}>Retweeting users</button>
+            <button className={styles.repliedButton} onClick={verification}>Replied users</button>
+
         </form>
     </main>
   )
