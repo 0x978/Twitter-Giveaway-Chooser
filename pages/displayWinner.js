@@ -1,15 +1,43 @@
 import TwitterApi from "twitter-api-v2"
-import {useEffect} from "react";
+import styles from "../styles/displayWinner.module.css"
+import {useState} from "react";
+import { useRouter } from "next/router";
 
 const Page = ({ response }) => {
+    const [winner,setWinner] = useState(response.data[0])
+    const [createdDate,setDate] = useState(new Date(winner.accountAge))
+    const [url,setUrl] = useState("https://www.twitter.com/"+winner.username)
+    const router = useRouter()
 
-    console.log(response)
+    function returnHome(){
+        router.push({
+            pathname: "/",
+        })
+    }
+
+
+    console.log(winner.winnerPage)
 
     return (
-        <main>
-            <h1>{response.data[0].id}</h1>
-            <h1>{response.data[0].name}</h1>
-            <h1>{response.data[0].username}</h1>
+        <main className={styles.winnerMain}>
+            <div className={styles.winnerDiv}>
+                <h1 > A winner has been selected!</h1>
+                <h2>Twitter ID: {winner.id}</h2>
+                <h2>Name: {winner.name}</h2>
+                <h2>Twitter Tag: {winner.username}</h2>
+                <h2>Account created date: {createdDate.toDateString()}</h2>
+                <h2>Private account: {winner.isPrivate ? "Yes" : "No"} </h2>
+                <h2>Verified account: {winner.isVerified ? "Yes" : "No"} </h2>
+
+
+                <h2>Followers: {winner.public_metrics.followers_count}</h2>
+                <h2>Following: {winner.public_metrics.following_count}</h2>
+                <h2>URL: <a href={url} target="_blank">{url}</a></h2>
+
+                <button className={styles.reRoll}>Re-roll Winner</button>
+                <button onClick={returnHome} className={styles.homeButton}>Return Home</button>
+
+            </div>
         </main>
     );
 };
@@ -52,12 +80,11 @@ export async function getServerSideProps(context) {
 
     let resArr = [iterateRes(likedByID.data)] // 2d arr of all user ID's per page
 
-    // twitter API heavily limits calls to 75 per 15 min, will have to work with only doing 10 calls to stay within limit
-    // this means only the most recent 1000 likes are considered
-    // TODO since I am iterating 10 times and then choosing a random page from 0 to 9, unnecessary API calls are being used up. Could run for loop random amount of times and take last?
-    for(let i = 0; i < 9; i++){ // iterating over likedbyID paginations 9 times (+1 from orig call = 10) TODO assess whether this is a good amount
+    // twitter API heavily limits calls to 75 per 15 min, will have to work with only doing a maximum of 20 calls to stay within limit this means at most only the most recent 2000 likes are considered
+    let consideredPages = Math.floor(Math.random() * 20)
+    for(let i = 0; i < consideredPages; i++){ // iterating over likedbyID paginations up to 20 times.
         if(!likedByID.done && likedByID.rateLimit.remaining > 10){
-            let pageResult = await likedByID.next(100) // stores new req as own instance, not necessary and confuses things TODO <<<
+            let pageResult = await likedByID.next(100)
             resArr.push(iterateRes(pageResult.data))
             console.log(pageResult.rateLimit) // TODO debug info remove later
         }
@@ -67,7 +94,8 @@ export async function getServerSideProps(context) {
     }
 
     let winner = chooseWinner(resArr)
-    console.log(winner) // TODO debug info remove later
+
+    console.log(winner.username) // TODO debug info remove later
 
     const winnerDetails = await twitterClient.v2.user(winner.id, { 'user.fields':
             ['created_at','description','entities','id','location','name','pinned_tweet_id',
@@ -83,7 +111,7 @@ export async function getServerSideProps(context) {
                     public_metrics:winnerDetails.data.public_metrics,
                     isVerified:winnerDetails.data.verified,
                     isPrivate:winnerDetails.data.protected,
-                    accountAge: winnerDetails.data.created_at
+                    accountAge: winnerDetails.data.created_at,
                 }]
             },
         },
@@ -99,17 +127,17 @@ function iterateRes(pageData){
     return arr
 }
 
-// randomly chooses a page, then a user within that page and returns their info
+// randomly chooses a page, then a user within that page and returns the winner user as well as the page of the winner
 function chooseWinner(participantArray){
     // randomly choosing a page from list of pages.
     let arrLength = participantArray.length
     let pageIndex = Math.floor(Math.random() * arrLength)
-    let winnerArray = participantArray[pageIndex] // TODO in future should return this aswell so the winner can be rerolled easily
+    let winnerPage = participantArray[pageIndex]
 
-    // choosing a user from chosen page.
-    let winnerArrayLength = winnerArray.length
-    let winnerIndex = Math.floor(Math.random() * winnerArrayLength)
-    return winnerArray[winnerIndex]
+    let pageLength = winnerPage.length
+    let winnerIndex = Math.floor(Math.random() * pageLength)
+    winnerPage.splice(winnerIndex,1)
+    return winnerPage[winnerIndex]
 }
 
 export default Page;
