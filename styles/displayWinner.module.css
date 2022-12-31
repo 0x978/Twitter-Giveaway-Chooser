@@ -21,10 +21,10 @@
     color: white;
 }
 
-.reRoll{
+.nextWinner{
     font-size: 18px;
     width: 20vw;
-    background-color: #1DA1F2;
+    background-color: #77DD77;
     border: none;
     color: white;
     padding: 12px 20px;
@@ -33,23 +33,48 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.reRoll:hover {
-    background-color: #0084FF; /* Change the background color on hover to a slightly darker shade of blue */
-    transform: translateY(-1px); /* Add a subtle press effect by shifting the button down 1px on hover */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Increase the box shadow on hover to give the button more depth */
+.nextWinner:hover {
+    background-color: #5cd15c;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-.reRoll:active {
-    background-color: #0073E5; /* Change the background color on active/clicked to darker shade of blue */
-    transform: translateY(1px); /* Shift the button up 1px to create a "release" effect */
-    box-shadow: none; /* Remove the box shadow on active/clicked to give the button a flat appearance */
+.nextWinner:active {
+    background-color: #2dcc2d;
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+.prevWinner{
+    margin-top: 1vh;
+    font-size: 18px;
+    width: 20vw;
+    background-color: #ff6961;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.prevWinner:hover {
+    background-color: #ed423b;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.prevWinner:active {
+    background-color: #df2c25;
+    transform: translateY(1px);
+    box-shadow: none;
 }
 
 .homeButton{
     font-size: 18px;
     width: 20vw;
     margin-top: 1vh;
-    background-color: #ff6961;
+    background-color: #1DA1F2;
     border: none;
     color: white;
     padding: 12px 20px;
@@ -59,11 +84,11 @@
 }
 
 .homeButton:hover{
-    background-color: #d94f47;
+    background-color: #0084FF;
     transform: translateY(-1px);
 }
 
 .homeButton:active{
-    background-color: #cb271f;
+    background-color: #0073E5;
     transform: translateY(1px);
 }

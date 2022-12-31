@@ -41,6 +41,18 @@
     border: 2px solid #555;
 }
 
+.winnerInput{
+    width: 50%;
+    height: 20%;
+    padding: 3px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    font-size: 15px;
+    text-align: center
+}
+
 .likedButton {
     background-color: transparent;
     color: #1DA1F2;
@@ -71,9 +83,10 @@
     border: none;
     cursor: pointer;
     font-size: 16px;
-    padding: 8px 16px;
+    padding: 8px 16px ;
     border-radius: 4px;
     transition: background-color 0.2s;
+    margin-bottom: 2vh;
 }
 
 .rtButton:hover {
