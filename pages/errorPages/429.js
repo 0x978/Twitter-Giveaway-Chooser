@@ -1,7 +1,7 @@
 import styles from "../../styles/429.module.css"
 import { useRouter } from "next/router";
 
-export default function err429(props) {
+export default function err429() {
     const router = useRouter()
 
     function handleClick(){

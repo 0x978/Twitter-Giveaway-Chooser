@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Router from 'next/router';
+import Head from 'next/head'
 
 // loading libraries
 import NProgress from 'nprogress';
@@ -18,5 +19,12 @@ export default function App({ Component, pageProps }) {
   Router.events.on('routeChangeComplete', () => NProgress.done());
   Router.events.on('routeChangeError', () => NProgress.done());
 
-  return <Component {...pageProps} />
+  return(
+      <>
+        <Head>
+          <title>Twitter Giveaway Chooser</title>
+        </Head>
+        <Component {...pageProps} />
+      </>
+)
 }
