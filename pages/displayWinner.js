@@ -9,6 +9,7 @@ const Page = ({ response }) => {
     const [createdDate,setDate] = useState(new Date(winner.created_at))
     const [url,setUrl] = useState("https://www.twitter.com/"+winner.username)
     const router = useRouter()
+    console.log(response)
 
     function returnHome(){
         router.push({
@@ -33,16 +34,10 @@ const Page = ({ response }) => {
             if(index < response.data[0].winnerInfo.length-1) {
                 setIndex(prevState => prevState + 1)
             }
-            else{
-                alert(`You have viewed all ${response.data[0].winnerInfo.length} winners!`)
-            }
         }
         else{
             if(index > 0){
                 setIndex(prevState => prevState-1)
-            }
-            else{
-                alert(`This is the first winner`)
             }
         }
     }
@@ -63,8 +58,12 @@ const Page = ({ response }) => {
                 <h2>Following: {winner.public_metrics.following_count}</h2>
                 <h2>URL: <a href={url} target="_blank">{url}</a></h2>
 
-                <button onClick={() => HandleIndex(true)} className={styles.nextWinner}>Next Winner</button>
-                <button onClick={() => HandleIndex(false)} className={styles.prevWinner}>Previous Winner</button>
+                <div className={styles.paginationButtons}>
+                    <button onClick={() => HandleIndex(false)} className={styles.prevWinner}>&#8249;</button>
+                    <h3>Winner {index+1}/{response.data[0].winnerInfo.length}</h3>
+                    <button onClick={() => HandleIndex(true)} className={styles.nextWinner}>&#8250;</button>
+                </div>
+
                 <button onClick={returnHome} className={styles.homeButton}>Return Home</button>
 
             </div>
